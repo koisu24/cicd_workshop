@@ -48,7 +48,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   cd: # cd라는 이름으로 Job을 실행하겠다.
-    needs: ci
+    needs: ci #cd는 ci 다음에 해야해서 needs는 꼭 필요
     name: CD
     runs-on: ubuntu-latest
     steps:
