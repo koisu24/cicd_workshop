@@ -48,7 +48,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   cd: # cd라는 이름으로 Job을 실행하겠다.
-    needs: ci #cd는 ci 다음에 해야해서 needs는 꼭 필요
+    needs: ci
     name: CD
     runs-on: ubuntu-latest
     steps:
@@ -60,6 +60,6 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker login --username AWS --password-stdin ${{ secrets.ECR_URI }} && sudo docker pull ${{ secrets.ECR_URI }}:${{ github.sha }}
+            aws ecr get-login-password --region ap-northeast-2 | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_URI }} && sudo docker pull ${{ secrets.ECR_URI }}:${{ github.sha }}
             sudo docker run -d --rm -p 8080:8000 ${{ secrets.ECR_URI }}:${{ github.sha }}
           
